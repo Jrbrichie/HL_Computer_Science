@@ -1,7 +1,5 @@
 package Unit5_Arrays;
 
-import java.util.Locale;
-
 public class CustomArray {
     /**
      * finds the first occurrence of an integer in the integer array
@@ -203,5 +201,3 @@ public class CustomArray {
         return null;
     }
 }
-
-

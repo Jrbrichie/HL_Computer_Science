@@ -77,5 +77,7 @@ public class TestCustomArray {
             System.out.print(swapped[i] + " ");
         }
         System.out.println(" ");
+
+        System.out.println(true || true);
     }
 }
