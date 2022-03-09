@@ -184,7 +184,7 @@ public class CustomNumList {
      * from index start to index end of numList
      */
     public int[] getSubList(int start, int end) {
-        int[] subList = new int[start-end-1];
+        int[] subList = new int[end - start + 1];
         int j = 0;
         for(int i = start; i <= end; i++){
             subList[j] = numList.get(i);
@@ -203,7 +203,16 @@ public class CustomNumList {
      * inserted at index in numList
      */
     public ArrayList<Integer> insertArrayInList(int[] arr, int index) {
-        return null;
+        ArrayList<Integer> newList = new ArrayList<Integer>();
+        if(!numList.isEmpty()){
+            newList.addAll(numList);
+            int j = 0;
+            for(int i = index; j < arr.length; i++){
+                newList.add(i, arr[j]);
+                j++;
+            }
+        }
+        return newList;
     }
 
     /**
@@ -218,7 +227,10 @@ public class CustomNumList {
      * @return a new list with combined contents
      */
     public ArrayList<Integer> combineList(ArrayList<Integer> list2) {
-        return null;
+        ArrayList<Integer> combined = new ArrayList<Integer>();
+        combined.addAll(numList);
+        combined.addAll(list2);
+        return combined;
     }
 
 
@@ -231,7 +243,13 @@ public class CustomNumList {
      * @return an ArrayList of even numbers, with n size
      */
     public ArrayList<Integer> makeNewListOfEvens(int n) {
-        return null;
+        ArrayList<Integer> evens = new ArrayList<Integer>();
+        for(int num : numList){
+            if(num % 2 == 0){
+                evens.add(num);
+            }
+        }
+        return evens;
     }
 
     /**
@@ -246,7 +264,26 @@ public class CustomNumList {
      * @return an ArrayList that contains the highest numbers from array arr
      */
     public ArrayList<Integer> getListOfHighest(int[] arr) {
-        return null;
+        ArrayList<Integer> highests = new ArrayList<Integer>();
+        if(!numList.isEmpty()){
+            int highest = numList.get(0);
+            int appearances = 0;
+            for(int i = 1; i < numList.size(); i++){
+                if(numList.get(i) > highest){
+                    appearances = 0;
+                    highest = numList.get(i);
+                    for(int j = i + 1; j < numList.size(); j++){
+                        if(numList.get(j) == highest){
+                            appearances++;
+                        }
+                    }
+
+                    for(int j = 0; j < numList.size(); j++){
+                        highests.add(highest);
+                    }
+                }
+            }
+        } return highests;
     }
 
 
