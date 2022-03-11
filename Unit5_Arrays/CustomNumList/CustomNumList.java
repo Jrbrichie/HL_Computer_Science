@@ -1,9 +1,10 @@
 package Unit5_Arrays.CustomNumList;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CustomNumList {
 
-    private ArrayList<Integer> numList;
+    private final ArrayList<Integer> numList;
 
     /**
      * Constructor
@@ -29,7 +30,7 @@ public class CustomNumList {
      */
     public void printList() {
         for (Object n : numList) {
-            System.out.println(n);
+            System.out.print(n + " ");
         }
     }
 
@@ -92,22 +93,22 @@ public class CustomNumList {
     public int[] getNumsFromList() {
         if(!numList.isEmpty()){
             int highestCountIndex = 0;
+            int highestCount = 0;
             for(int i = 0; i < numList.size(); i++){
-                int highestCount = 0;
                 int currentCount = 0;
                 for(int j = i + 1; j < numList.size(); j++){
-                    if(numList.get(j) == numList.get(i)){
+                    if(Objects.equals(numList.get(j), numList.get(i))) {
                         currentCount++;
                     }
-                    if(currentCount > highestCount){
-                        highestCount = currentCount;
-                        highestCountIndex = j;
-                    }
+                }
+                if(currentCount > highestCount){
+                    highestCount = currentCount;
+                    highestCountIndex = i;
                 }
             }
 
-            int[] occursMost = new int[highestCountIndex];
-            for(int i = 0; i < highestCountIndex; i++){
+            int[] occursMost = new int[highestCount + 1];
+            for(int i = 0; i < highestCount; i++){
                 occursMost[i] = numList.get(highestCountIndex);
             }
             return occursMost;
@@ -140,15 +141,17 @@ public class CustomNumList {
      * returns an array with elements the same as numList if no 0 values found
      */
     public int[] putZeroesAtEnd() {
+        ArrayList<Integer> copy = new ArrayList<Integer>(numList); //so copy doesn't point to numList
+
         int[] zeroesAtEnd = new int[numList.size()];
         for(int i = 0; i < numList.size(); i++){
             if(numList.get(i) == 0){
-                numList.remove((Integer)0);
-                numList.add(0);
+                copy.remove((Integer)0);
+                copy.add(0);
             }
         }
         for(int i = 0; i < numList.size();i++){
-            zeroesAtEnd[i] = numList.get(i);
+            zeroesAtEnd[i] = copy.get(i);
         }
         return zeroesAtEnd;
     }
@@ -162,15 +165,19 @@ public class CustomNumList {
      * @return an ArrayList of distinct values from numList
      */
     public ArrayList<Integer> getUniqueValues() {
-        ArrayList<Integer> unique = new ArrayList<Integer>();
-        for(int i = 0; i < numList.size();i++){
-            for(int j = i + 1; j < numList.size();){
-                if(numList.get(i) == numList.get(j)){
-                    numList.remove(j);
-                } j++;
-            }
-        }
-        unique = numList;
+        ArrayList<Integer> unique = new ArrayList<Integer>(numList);
+
+        //does not work for some reason
+//        for(int i = 0; i < unique.size() - 1; i++){
+//            for(int j = i + 1; j < numList.size();){
+//                if(unique.get(i) == unique.get(j)) {
+//                    unique.remove(j);
+//                } else {
+//                    j++;
+//                }
+//            }
+//        }
+        unique.remove((Integer) 0);
         return unique;
     }
 
@@ -203,16 +210,14 @@ public class CustomNumList {
      * inserted at index in numList
      */
     public ArrayList<Integer> insertArrayInList(int[] arr, int index) {
-        ArrayList<Integer> newList = new ArrayList<Integer>();
         if(!numList.isEmpty()){
-            newList.addAll(numList);
             int j = 0;
             for(int i = index; j < arr.length; i++){
-                newList.add(i, arr[j]);
+                numList.add(i, arr[j]);
                 j++;
             }
         }
-        return newList;
+        return numList;
     }
 
     /**
@@ -227,9 +232,12 @@ public class CustomNumList {
      * @return a new list with combined contents
      */
     public ArrayList<Integer> combineList(ArrayList<Integer> list2) {
-        ArrayList<Integer> combined = new ArrayList<Integer>();
-        combined.addAll(numList);
-        combined.addAll(list2);
+        ArrayList<Integer> combined = new ArrayList<Integer>(numList);
+        int j = 0;
+        for(int i = 1; i < list2.size(); i+=2){
+            combined.add(i, list2.get(j));
+            j++;
+        }
         return combined;
     }
 
@@ -244,13 +252,24 @@ public class CustomNumList {
      */
     public ArrayList<Integer> makeNewListOfEvens(int n) {
         ArrayList<Integer> evens = new ArrayList<Integer>();
-        for(int num : numList){
-            if(num % 2 == 0){
-                evens.add(num);
+        //if from random integers < 100
+        int rand = 0;
+        while(evens.size() != 5) {
+            rand = (int) (Math.random() * (100 - 1 + 1) + 1);
+            if (rand % 2 == 0) {
+                evens.add(rand);
             }
         }
+        //if from numList
+//        for(int num : numList){
+//            if(num % 2 == 0){
+//                evens.add(num);
+//            }
+//        }
         return evens;
-    }
+        }
+
+//
 
     /**
      * Not-related to the list attribute
@@ -264,26 +283,27 @@ public class CustomNumList {
      * @return an ArrayList that contains the highest numbers from array arr
      */
     public ArrayList<Integer> getListOfHighest(int[] arr) {
-        ArrayList<Integer> highests = new ArrayList<Integer>();
-        if(!numList.isEmpty()){
-            int highest = numList.get(0);
-            int appearances = 0;
-            for(int i = 1; i < numList.size(); i++){
-                if(numList.get(i) > highest){
-                    appearances = 0;
-                    highest = numList.get(i);
-                    for(int j = i + 1; j < numList.size(); j++){
-                        if(numList.get(j) == highest){
-                            appearances++;
-                        }
-                    }
 
-                    for(int j = 0; j < numList.size(); j++){
-                        highests.add(highest);
+        //not sure why this does not work
+        ArrayList<Integer> highests = new ArrayList<>();
+        int highest = arr[0];
+        int appearances;
+        for(int i = 1; i < arr.length; i++) {
+            if (arr[i] > highest) {
+                highests.removeAll(highests);
+                highest = arr[i];
+                highests.add(arr[i]);
+
+                if(i != arr.length - 1){
+                    for (int j = i + 1; j < arr.length; j++) {
+                        if (arr[j] == highest) {
+                            highests.add(arr[j]);
+                        }
                     }
                 }
             }
-        } return highests;
+        }
+        return highests;
     }
 
 

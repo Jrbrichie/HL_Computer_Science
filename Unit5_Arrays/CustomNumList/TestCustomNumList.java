@@ -19,7 +19,21 @@ class TestCustomNumList {
         cn.printList();
 
         System.out.println();
+        System.out.println("Printing lowest number...");
+        System.out.println(cn.getLowest());
         System.out.println();
+        int[] odds = cn.getOddsFromList();
+        for (int o: odds) {
+            System.out.print(o + " ");
+        }
+
+        System.out.println("Printing common nums from list...");
+        int[] commonNums = cn.getNumsFromList();
+        for(int n: commonNums){
+            System.out.print(n + " ");
+        }
+        System.out.println();
+
         System.out.println("ArrayList with zeros at end");
         int[] nums = cn.putZeroesAtEnd();
         for (int n : nums) {
@@ -55,8 +69,10 @@ class TestCustomNumList {
         list2.add(6);
         list2.add(7);
         list2.add(8);
+        System.out.println();
         System.out.println("Contents of list2...");
         System.out.println(list2);
+        System.out.println();
         System.out.println("Combining numList to list2 in alternate order...");
         ArrayList<Integer> combined = cn.combineList(list2);
         System.out.println(combined);
