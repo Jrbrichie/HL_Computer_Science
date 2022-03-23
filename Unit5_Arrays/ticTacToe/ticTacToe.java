@@ -47,20 +47,15 @@ class ticTacToe{
     }
 
     public String getPlayingPlayer(){
+        String player = "";
         if(turn == 1){
-            return p1;
+            player = p1;
             turn = 2;
         } else if(turn == 2){
-            return p2;
+            player = p2;
             turn = 1;
         }
-    }
-
-    //fills in index in board if current index is a dash
-    public void fillBoard(int r, int c){
-        if(board[r][c].equals("-")){
-            board[r][c] = getPlayingPlayer();
-        }
+        return player;
     }
 
     //checks if all spots are filled
@@ -70,13 +65,29 @@ class ticTacToe{
         } return false;
     }
 
-    public int getPlayer(){
-        return turn;
+    //checks for vertical win
+    public Boolean verticalWin(){
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+
+            }
+        }
+        return true;
     }
 
-    public boolean getWinner(){
-        return false;
+    //checks for horizontal win
+    public Boolean horizontalWin(){
+        return true;
     }
 
 
+    //checks for diagonal win
+    public Boolean diagonalWin(){
+        return true;
+    }
+
+    //game loop
+    public Boolean gameLoop(){
+        return true;
+    }
 }
