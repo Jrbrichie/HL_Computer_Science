@@ -1,6 +1,4 @@
 package Squared;
-
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -8,25 +6,45 @@ import java.util.Scanner;
  * Date: 26/03/22
  */
 public class SquaredAlgo {
+
     //class attributes
     private int[][] board;
-    private final Scanner in;
     private double money, bet;
     private int wins;
+    private String choice;
 
     //constructor
-    public SquaredAlgo(int[][] board, Scanner in, double money, double bet, int wins) {
+    public SquaredAlgo(double money, double bet) {
         this.board = new int[5][5];
-        this.in = new Scanner(System.in);
         this.money = money;
         this.bet = bet;
-        this.wins = wins;
+        wins = 0;
+        choice = "";
     }
 
+
+    //returns wins
+    public int getWins() {
+        return wins;
+    }
+
+    //returns money
+    public double getMoney(){
+        return money;
+    }
+
+    public String getChoice(){
+        return choice;
+    }
 
     //sets money at hand
     public void setMoney(double money) {
         this.money = money;
+    }
+
+    //sets choice
+    public void setChoice(String choice){
+        this.choice = choice;
     }
 
     //sets bet
@@ -35,7 +53,7 @@ public class SquaredAlgo {
     }
 
     //fills board
-    public void setBoard(int[][] board) {
+    public void setBoard() {
         for(int i = 0; i < 5; i++){
             for(int j = 0; j < 5; j++){
                 board[i][j] = (int)(Math.random() * 2);
@@ -43,18 +61,30 @@ public class SquaredAlgo {
         }
     }
 
-    //sets money based on winnings
-    public void updateMoney(){
+
+    //sets money based on winnings and returns money
+    public double updateMoney(){
         if(wins > 0){
             money += (bet / 2) * wins;
         } else {
             money -= bet;
         }
+        return money;
+    }
+
+    //prints all elements in the board
+    public void printBoard(){
+        for(int[] row : board){
+            for(int i : row){
+                System.out.print(row[i] + " ");
+            }
+            System.out.println();
+        }
     }
 
 
     /**
-     * checks for 2x2 squares by iterating through the first 4 rows
+     * checks for 2x2 squares by iterating through the first 4 rows and columns
      * increments wins
      */
     public void twoByTwo(){
@@ -64,6 +94,7 @@ public class SquaredAlgo {
                 if(e == board[i + 1][j] && e == board[i + 1][j + 1] &&
                 e == board[i][j + 1] && e == board[i + 1][j + 1]){
                     wins++;
+                    System.out.println("two");
                 }
             }
         }
@@ -79,14 +110,15 @@ public class SquaredAlgo {
             for(int j = 0; j < 3; j++){
                 int e = board[i][j];
 
-                for(int k = i; k < 3; k++){
-                    for(int l = j; l < 3; l++){
+                for(int k = i; k < i + 3; k++){
+                    for(int l = j; l < j + 3; l++){
                         if(e != board[k][l]){
                             break innerloop; //breaks inner k, l and j loops
                         }
                     }
                 }
                 wins++;
+                System.out.println("three");
             }
         }
     }
@@ -102,14 +134,15 @@ public class SquaredAlgo {
             for(int j = 0; j < 2; j++){
                 int e = board[i][j];
 
-                for(int k = i; k < 4; k++){
-                    for(int l = j; l < 4; l++){
+                for(int k = i; k < i + 2; k++){
+                    for(int l = j; l < j + 2; l++){
                         if(e != board[k][l]){
                             break innerloop; //breaks inner k, l and j loops
                         }
                     }
                 }
                 wins++;
+                System.out.println("four");
             }
         }
     }
@@ -130,24 +163,35 @@ public class SquaredAlgo {
                 }
             }
         }
+        System.out.println("five");
 
         wins++;
     }
 
+    //runs all checking methods
+    public void runAllChecks(){
+        setBoard();
+        twoByTwo();
+        threeByThree();
+        fourByFour();
+        fiveByFive();
+    }
+
 
     //checks for invalid initial money, returns true/false
-    public boolean invalidMoney(){
-        return money <= 0;
+    public boolean invalidMoney(double m){
+        return m <= 0;
     }
 
     //checks for invalid bet, returns true/false
-    public boolean invalidBet(){
-        return bet <= 0 || bet > money;
+    public boolean invalidBet(double b){
+        return b <= 0 || b > money;
     }
 
     //checks for invalid (letter choice), returns true/false
-    public boolean invalidChoice(String choice){
-        choice = choice.toLowerCase();
-        return !(choice.equals("p") || choice.equals("q"));
+    public boolean invalidChoice(String c){
+        c = c.toLowerCase();
+        return !(c.equals("p") || c.equals("q"));
     }
+
 }
